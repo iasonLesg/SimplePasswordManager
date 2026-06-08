@@ -1,0 +1,158 @@
+﻿<Window x:Class="Local_Password_Manager.EditButton"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Edit Password" Height="550" Width="500"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#1E2A38"/>
+            <Setter Property="Foreground" Value="#4FD1C5"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#0F1722" CornerRadius="10" BorderBrush="#1E2A38" BorderThickness="2">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="15" ShadowDepth="5" Opacity="0.5"/>
+        </Border.Effect>
+
+        <Grid>
+
+            <Border HorizontalAlignment="Right" VerticalAlignment="Top" 
+        Margin="15" Width="50" Height="50" 
+        CornerRadius="25" Background="#1f2833 ">
+
+                <Button Content="🗑️" Click="DeleteIcon_Click" 
+            Style="{StaticResource ModernButton}" 
+            Background="Transparent" 
+            ToolTip="Delete Entry"
+            ToolTipService.ShowDuration="5000">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Border" Background="#1d2430" CornerRadius="25">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="False">
+                                    <Setter TargetName="Border" Property="Background" Value="#1f2833"/>
+                                    <Setter Property="Foreground" Value="#ff6b6b"/>
+                                </Trigger>
+
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="#2D3A4A"/>
+                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Border>
+
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
+                <TextBlock Text="Edit Entry" Foreground="#4FD1C5" FontSize="35" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,40"/>
+
+                <TextBlock Text="Site Name" Foreground="#4FD1C5" FontSize="18" Margin="0,0,0,5" TextAlignment="Center"/>
+                <TextBox Name="TxtEditSiteName" Height="50" FontSize="22" Foreground="Wheat" Background="#1E2A38" 
+             BorderThickness="0" Padding="10" Margin="0,0,0,25"
+             TextAlignment="Center" VerticalContentAlignment="Center"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
+                    <TextBlock Text="New Password" Foreground="#4FD1C5" FontSize="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+
+                    <Button Click="GeneratePass_Click" 
+        ToolTip="Generate Password" 
+        Width="35" Height="35" 
+        Cursor="Hand" BorderThickness="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="BtnBorder" 
+                    Background="#1f2833" 
+                    CornerRadius="17.5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="False">
+                                        <Setter TargetName="BtnBorder" Property="Background" Value="#1f2833"/>
+                                        <Setter Property="Foreground" Value="#ed601a"/>
+                                    </Trigger>
+
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="BtnBorder" Property="Background" Value="#2D3A4A"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+
+                        <Viewbox Width="35" Height="35">
+                            <TextBlock Text="♻" FontSize="30" FontWeight="Bold" Margin="0,-5,0,0"/>
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+
+                <TextBox Name="TxtEditPassword" Height="50" FontSize="22" Foreground="Wheat" Background="#1E2A38" 
+             BorderThickness="0" Padding="10" Margin="0,0,0,40"
+             TextAlignment="Center" VerticalContentAlignment="Center"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Click="Cancel_Click" Height="50" Cursor="Hand" BorderThickness="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="BtnBorder" Background="#ab0722" CornerRadius="8">
+                                    <ContentPresenter x:Name="Presenter" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                      Content="Cancel" TextBlock.FontWeight="Bold" TextBlock.FontSize="20" TextBlock.Foreground="White"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="BtnBorder" Property="Background" Value="White"/>
+                                        <Setter TargetName="Presenter" Property="TextElement.Foreground" Value="#ab0722"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <Button Grid.Column="2" Click="Save_Click" Height="50" Cursor="Hand" BorderThickness="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="BtnBorder" Background="#4FD1C5" CornerRadius="8">
+                                    <ContentPresenter x:Name="Presenter" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                      Content="Save" TextBlock.FontWeight="Bold" TextBlock.FontSize="20" TextBlock.Foreground="#0F1722"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="BtnBorder" Property="Background" Value="White"/>
+                                        <Setter TargetName="Presenter" Property="TextElement.Foreground" Value="#4FD1C5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</Window>

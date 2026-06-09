@@ -268,7 +268,7 @@
                     <TextBlock Text="Welcome!" FontSize="24" Foreground="#4FD1C5" FontWeight="Bold" Grid.Row="0" Margin="0,0,0,15"/>
 
                     <TextBlock Name="Step1Text" Grid.Row="1" Foreground="#E2E8F0" FontSize="16" TextWrapping="Wrap" LineHeight="24">
-                Welcome to <Run FontWeight="Bold" Foreground="#4FD1C5">ProgramName</Run>, the password manager that stores all your passwords locally using standard AES ENCRYPTION.
+                Welcome to <Run FontWeight="Bold" Foreground="#4FD1C5">CipherVault</Run>, the password manager that stores all your passwords locally using standard AES ENCRYPTION.
                     </TextBlock>
 
                     <TextBlock Name="Step2Text" Grid.Row="1" Foreground="#E2E8F0" FontSize="16" TextWrapping="Wrap" LineHeight="24" Visibility="Collapsed">

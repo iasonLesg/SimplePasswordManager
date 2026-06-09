@@ -1,7 +1,10 @@
 ﻿using Password_Manager;
 using System;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,13 +13,11 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
-using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace Local_Password_Manager
 {
@@ -41,6 +42,10 @@ namespace Local_Password_Manager
             GetPass();
             _proc = HookCallback;
             _hookID = SetHook(_proc);
+
+            if (SaveLoad.Dict == null){}
+            else if (SaveLoad.Dict.Count == 0) { }
+            else { finishTutorial(); }
         }
         protected override void OnClosed(EventArgs e)
         {
@@ -193,7 +198,50 @@ namespace Local_Password_Manager
                 Back(null, null);
             }
         }
+        private void Next_Click(object sender, RoutedEventArgs e)
+        {
+            Step1Text.Visibility = Visibility.Collapsed;
+            NextBtn.Visibility = Visibility.Collapsed;
 
+            // Show Step 2
+            Step2Text.Visibility = Visibility.Visible;
+            FinishBtn.Visibility = Visibility.Visible;
+            TutorialArrow.Visibility = Visibility.Visible;
+
+            // *** ADDED: Start the arrow oscillation ***
+            // Find the storyboard resource defined inside the TutorialOverlay grid
+            Storyboard osc = (Storyboard)TutorialOverlay.FindResource("ArrowOscillationStoryboard");
+            osc.Begin(TutorialOverlay);
+        }
+
+        private void Finish_Click(object sender, RoutedEventArgs e)
+        {
+            TutorialOverlay.Visibility = Visibility.Collapsed;
+
+            // *** ADDED: Stop the animation to save resources ***
+            Storyboard osc = (Storyboard)TutorialOverlay.FindResource("ArrowOscillationStoryboard");
+            osc.Stop(TutorialOverlay);
+        }
+        private void Skip_Click(object sender, RoutedEventArgs e)
+        {
+            // Instantly hide the tutorial overlay
+            TutorialOverlay.Visibility = Visibility.Collapsed;
+
+            // *** ADDED: Stop the animation when skipped ***
+            Storyboard osc = (Storyboard)TutorialOverlay.FindResource("ArrowOscillationStoryboard");
+            osc.Stop(TutorialOverlay);
+        }
+
+
+        private void  finishTutorial() {
+
+            // Instantly hide the tutorial overlay
+            TutorialOverlay.Visibility = Visibility.Collapsed;
+
+            // *** ADDED: Stop the animation when skipped ***
+            Storyboard osc = (Storyboard)TutorialOverlay.FindResource("ArrowOscillationStoryboard");
+            osc.Stop(TutorialOverlay);
+        }
         private void GetPass()
         {
             SaveLoad.UpdatePass();
@@ -201,8 +249,12 @@ namespace Local_Password_Manager
             //PopulatePasswords(SaveLoad.Dict);
             TogleView();
         }
-     
-         private void ToggleView_Click(object sender, RoutedEventArgs e)
+        
+            private void HideButton_Click(object sender, RoutedEventArgs e)
+        {
+            Panel_Controll.Visibility = Visibility.Hidden;
+        }
+        private void ToggleView_Click(object sender, RoutedEventArgs e)
         {
             TogleView(true);
         }
@@ -238,8 +290,8 @@ namespace Local_Password_Manager
                 }
 
             }
-           
 
+            filterwithtext();
 
 
         }
@@ -512,6 +564,11 @@ namespace Local_Password_Manager
         }
         private void SearchTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
+            filterwithtext();
+        }
+
+        private void filterwithtext() {
+
             string searchText = SearchTxt.Text.ToLower();
 
             // Loop through the StackPanel (which now contains TextBlocks and WrapPanels)
@@ -552,10 +609,45 @@ namespace Local_Password_Manager
                         header.Visibility = wrapPanel.Visibility;
                     }
                 }
+                else if (BorderContainer.Children[i] is StackPanel stackpanel)
+                {
+                    bool hasVisibleCards = false;
+
+                    // Loop through the generated Cards inside the WrapPanel
+                    foreach (UIElement element in stackpanel.Children)
+                    {
+                        if (element is Border card)
+                        {
+                            // Dig into the card to find the main Copy button text
+                            Grid cardGrid = card.Child as Grid;
+                            Button copyBtn = cardGrid.Children[0] as Button;
+                            string buttonText = copyBtn.Content.ToString().ToLower();
+
+                            if (buttonText.Contains(searchText))
+                            {
+                                card.Visibility = Visibility.Visible;
+                                hasVisibleCards = true;
+                            }
+                            else
+                            {
+                                card.Visibility = Visibility.Collapsed;
+                            }
+                        }
+                    }
+
+                    // Hide the entire WrapPanel if all its cards are hidden by the search
+                    stackpanel.Visibility = hasVisibleCards ? Visibility.Visible : Visibility.Collapsed;
+
+                    // Also hide the Letter Header above it
+                    if (i > 0 && BorderContainer.Children[i - 1] is TextBlock header)
+                    {
+                        header.Visibility = stackpanel.Visibility;
+                    }
+
+                }
             }
+        
         }
-
-
 
         private async void GeneratedPasswordButton_Click(object sender, RoutedEventArgs e)
         {

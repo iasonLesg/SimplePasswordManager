@@ -203,23 +203,132 @@
                 </Border>
             </Grid>
         </Grid>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,30,15,0"  Name="Panel_Controll">
 
-        <Border HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,15,0" Width="35" Height="35">
-            <Border.Effect>
-                <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
-            </Border.Effect>
-            <Button Name="ToggleVaultBtn" Content="🔒" Click="ToggleVault_Click" 
-                    Background="#1E2A38" Foreground="#4FD1C5" FontSize="22" BorderThickness="0" Cursor="Hand">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="18">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,2"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-        </Border>
+            <Border Width="35" Height="35" Margin="0,0,0,8">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                </Border.Effect>
+                <Button Name="ToggleVaultBtn" Content="🔒" Click="ToggleVault_Click" 
+                Background="#1E2A38" Foreground="#4FD1C5" FontSize="22" BorderThickness="0" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="18">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,2"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Border>
 
+            <Border Width="25" Height="25" HorizontalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                </Border.Effect>
+                <Button Name="HideButton" Content="👁️‍🗨️" Click="HideButton_Click" 
+                Background="#1E2A38" Foreground="#4FD1C5" FontSize="12" BorderThickness="0" Cursor="Hand"
+                ToolTip="Hide">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="12.5">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,1"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Border>
+
+        </StackPanel>
+        <Grid Name="TutorialOverlay" Background="#B2000000" Panel.ZIndex="100">
+            <Grid.Resources>
+                <Storyboard x:Key="ArrowOscillationStoryboard">
+                    <DoubleAnimation Storyboard.TargetName="ArrowTranslate" 
+                             Storyboard.TargetProperty="X" 
+                             From="0" To="30" Duration="0:0:0.6" 
+                             AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction>
+                            <SineEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </Grid.Resources>
+            <Border Width="450" Height="350" Background="#1E2A38" CornerRadius="12" 
+            HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="5" Opacity="0.6"/>
+                </Border.Effect>
+
+                <Grid Margin="25">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Welcome!" FontSize="24" Foreground="#4FD1C5" FontWeight="Bold" Grid.Row="0" Margin="0,0,0,15"/>
+
+                    <TextBlock Name="Step1Text" Grid.Row="1" Foreground="#E2E8F0" FontSize="16" TextWrapping="Wrap" LineHeight="24">
+                Welcome to <Run FontWeight="Bold" Foreground="#4FD1C5">ProgramName</Run>, the password manager that stores all your passwords locally using standard AES ENCRYPTION.
+                    </TextBlock>
+
+                    <TextBlock Name="Step2Text" Grid.Row="1" Foreground="#E2E8F0" FontSize="16" TextWrapping="Wrap" LineHeight="24" Visibility="Collapsed">
+                To access your passwords, click the <Run FontWeight="Bold">lock icon</Run> on the middle-right of your screen.
+                <LineBreak/><LineBreak/>
+                <Run Foreground="#94A3B8" FontSize="14">💡 Quick Tip: You can also tap</Run> <Run FontWeight="Bold" Foreground="#4FD1C5">Ctrl</Run> <Run Foreground="#94A3B8" FontSize="14">twice (Ctrl + Ctrl) for easy access anywhere!</Run>
+                    </TextBlock>
+
+                    <Grid Grid.Row="2" Margin="0,10,0,0">
+
+                        <Button Name="SkipBtn" Content="Skip Tutorial" Click="Skip_Click" 
+            HorizontalAlignment="Left" Cursor="Hand" Foreground="#94A3B8" 
+            FontSize="14" Background="Transparent" BorderThickness="0" Height="35">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="Transparent">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                            <Button Name="NextBtn" Content="Next" Click="Next_Click" Cursor="Hand" Foreground="#1E2A38" FontSize="14" FontWeight="Bold" BorderThickness="0" Width="80" Height="35">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="#4FD1C5" CornerRadius="6">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+                            <Button Name="FinishBtn" Content="Finish" Click="Finish_Click" Visibility="Collapsed" Cursor="Hand" Foreground="#1E2A38" FontSize="14" FontWeight="Bold" BorderThickness="0" Width="80" Height="35">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="#4FD1C5" CornerRadius="6">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <TextBlock Name="TutorialArrow" Text="➔" FontSize="70" Foreground="#4FD1C5" 
+               HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,30,80,0" 
+               Visibility="Collapsed">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="#4FD1C5" BlurRadius="15" ShadowDepth="0" Opacity="0.8"/>
+                </TextBlock.Effect>
+
+                <TextBlock.RenderTransform>
+                    <TranslateTransform x:Name="ArrowTranslate" X="0" Y="0"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Grid>
         <Border Name="SaveBorder" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,100,0"
                 Background="#1E2A38" CornerRadius="8" Padding="15,10" Visibility="Hidden">
             <Border.Effect>

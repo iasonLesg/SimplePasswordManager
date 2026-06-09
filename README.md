@@ -30,8 +30,8 @@ While you can run the application directly, the safest way to use an open-source
 ## 🤝 Contributing
 Contributions, issues, and feature requests are welcome! Feel free to fork the repo and submit a pull request.
 
-## 📄 License
-This project is open-source and available to use, modify, and distribute. 
+## ⚖️ License
+Distributed under the MIT License. See LICENSE for more information.
 
 ---
 *Built with privacy in mind. Enjoy!*
